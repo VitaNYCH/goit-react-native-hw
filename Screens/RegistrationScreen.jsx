@@ -10,13 +10,23 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from "react-native";
+
 import img from "../assets/images/PhotoBG.png";
 import { styles } from "./style";
+
+const initialState = {
+  login: "",
+  email: "",
+  password: "",
+};
+
 export const RegistrationScreen = () => {
-  const { isShownKeyBoard, setIsShownKeyBoard } = useState(false);
+  const [isShownKeyBoard, setIsShownKeyBoard] = useState(false);
+  const [state, setstate] = useState(initialState);
   const keyBoardHide = () => {
     setIsShownKeyBoard(true);
     Keyboard.dismiss();
+    setstate(initialState);
   };
   return (
     <TouchableWithoutFeedback onPress={keyBoardHide}>
@@ -24,7 +34,11 @@ export const RegistrationScreen = () => {
         <ImageBackground style={styles.imgBg} source={img}>
           <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}>
-            <View style={styles.form}>
+            <View
+              style={{
+                ...styles.form,
+                marginBottom: isShownKeyBoard ? 20 : 0,
+              }}>
               <View style={styles.title}>
                 <Text style={styles.textTitle}>Реєстрація</Text>
               </View>
@@ -33,9 +47,13 @@ export const RegistrationScreen = () => {
                 <TextInput
                   placeholder="Логін"
                   style={styles.input}
+                  value={state.login}
                   onFocus={() => {
                     setIsShownKeyBoard(true);
                   }}
+                  onChangeText={(value) =>
+                    setstate((prevState) => ({ ...prevState, login: value }))
+                  }
                 />
               </View>
 
@@ -43,9 +61,13 @@ export const RegistrationScreen = () => {
                 <TextInput
                   placeholder="Адреса електронної пошти"
                   style={styles.input}
+                  value={state.email}
                   onFocus={() => {
                     setIsShownKeyBoard(true);
                   }}
+                  onChangeText={(value) =>
+                    setstate((prevState) => ({ ...prevState, email: value }))
+                  }
                 />
               </View>
 
@@ -53,10 +75,14 @@ export const RegistrationScreen = () => {
                 <TextInput
                   placeholder="Пароль"
                   style={styles.input}
+                  value={state.password}
                   secureTextEntry={true}
                   onFocus={() => {
                     setIsShownKeyBoard(true);
                   }}
+                  onChangeText={(value) =>
+                    setstate((prevState) => ({ ...prevState, password: value }))
+                  }
                 />
               </View>
 
@@ -68,7 +94,7 @@ export const RegistrationScreen = () => {
               </TouchableOpacity>
 
               <View style={styles.notice}>
-                <Text>Вже є аккаунт? Увійти</Text>
+                <Text style={styles.textNotice}>Вже є акаунт? Увійти</Text>
               </View>
             </View>
           </KeyboardAvoidingView>

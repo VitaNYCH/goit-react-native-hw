@@ -14,6 +14,7 @@ export const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderTopRightRadius: 25,
     borderTopLeftRadius: 25,
+    paddingBottom: 150,
   },
   title: {
     alignItems: "center",
@@ -21,6 +22,7 @@ export const styles = StyleSheet.create({
   },
   textTitle: {
     fontSize: 30,
+    fontFamily: "Roboto-Medium",
   },
 
   input: {
@@ -46,10 +48,15 @@ export const styles = StyleSheet.create({
   buttonTitle: {
     color: "#ffffff",
     fontSize: 16,
+    fontFamily: "Roboto-Regular",
   },
   notice: {
     marginTop: 10,
     alignItems: "center",
     justifyContent: "center",
+  },
+  textNotice: {
+    fontSize: 16,
+    fontFamily: "Roboto-Regular",
   },
 });
