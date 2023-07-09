@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Text,
   View,
@@ -19,17 +19,30 @@ const initialState = {
 };
 
 export const LoginScreen = () => {
-  const [isShownKeyBoard, setIsShownKeyBoard] = useState(false);
+  const [isShownKey, setIsShownKey] = useState(false);
   const [state, setstate] = useState(initialState);
   const handleFocus = () => {
-    setIsShownKeyBoard(true);
+    setIsShownKey(true);
   };
 
   const keyBoardHide = () => {
-    setIsShownKeyBoard(true);
+    setIsShownKey(true);
     Keyboard.dismiss();
     setstate(initialState);
   };
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+      setIsShownKey(true);
+    });
+    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+      setIsShownKey(false);
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
   return (
     <TouchableWithoutFeedback onPress={keyBoardHide}>
       <KeyboardAvoidingView
@@ -39,7 +52,7 @@ export const LoginScreen = () => {
           <View
             style={{
               ...styles.form,
-              marginBottom: isShownKeyBoard ? -20 : 100,
+              paddingBottom: isShownKey ? 20 : 100,
             }}>
             <View style={styles.title}>
               <Text style={styles.textTitle}>Увійти</Text>
