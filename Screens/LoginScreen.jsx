@@ -21,6 +21,10 @@ const initialState = {
 export const LoginScreen = () => {
   const [isShownKeyBoard, setIsShownKeyBoard] = useState(false);
   const [state, setstate] = useState(initialState);
+  const handleFocus = () => {
+    setIsShownKeyBoard(true);
+  };
+
   const keyBoardHide = () => {
     setIsShownKeyBoard(true);
     Keyboard.dismiss();
@@ -46,9 +50,7 @@ export const LoginScreen = () => {
                 placeholder="Адреса електронної пошти"
                 style={styles.input}
                 value={state.email}
-                onFocus={() => {
-                  setIsShownKeyBoard(true);
-                }}
+                onFocus={handleFocus}
                 onChangeText={(value) =>
                   setstate((prevState) => ({ ...prevState, email: value }))
                 }
@@ -61,9 +63,7 @@ export const LoginScreen = () => {
                 style={styles.input}
                 value={state.password}
                 secureTextEntry={true}
-                onFocus={() => {
-                  setIsShownKeyBoard(true);
-                }}
+                onFocus={handleFocus}
                 onChangeText={(value) =>
                   setstate((prevState) => ({ ...prevState, password: value }))
                 }
