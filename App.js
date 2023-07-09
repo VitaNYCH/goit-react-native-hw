@@ -11,8 +11,8 @@ export default function App() {
   }
   return (
     <>
-      <RegistrationScreen />
-      {/* <LoginScreen /> */}
+      {/* <RegistrationScreen /> */}
+      <LoginScreen />
     </>
   );
 }

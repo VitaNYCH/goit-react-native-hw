@@ -23,6 +23,9 @@ const initialState = {
 export const RegistrationScreen = () => {
   const [isShownKeyBoard, setIsShownKeyBoard] = useState(false);
   const [state, setstate] = useState(initialState);
+  const handleFocus = () => {
+    setIsShownKeyBoard(true);
+  };
   const keyBoardHide = () => {
     setIsShownKeyBoard(true);
     Keyboard.dismiss();
@@ -38,7 +41,7 @@ export const RegistrationScreen = () => {
           <View
             style={{
               ...styles.form,
-              paddingBottom: isShownKeyBoard ? 20 : 100,
+              marginBottom: isShownKeyBoard ? -20 : 100,
             }}>
             <View style={styles.title}>
               <Text style={styles.textTitle}>Реєстрація</Text>
@@ -49,9 +52,7 @@ export const RegistrationScreen = () => {
                 placeholder="Логін"
                 style={styles.input}
                 value={state.login}
-                onFocus={() => {
-                  setIsShownKeyBoard(true);
-                }}
+                onFocus={handleFocus}
                 onChangeText={(value) =>
                   setstate((prevState) => ({ ...prevState, login: value }))
                 }
@@ -63,9 +64,7 @@ export const RegistrationScreen = () => {
                 placeholder="Адреса електронної пошти"
                 style={styles.input}
                 value={state.email}
-                onFocus={() => {
-                  setIsShownKeyBoard(true);
-                }}
+                onFocus={handleFocus}
                 onChangeText={(value) =>
                   setstate((prevState) => ({ ...prevState, email: value }))
                 }
@@ -78,9 +77,7 @@ export const RegistrationScreen = () => {
                 style={styles.input}
                 value={state.password}
                 secureTextEntry={true}
-                onFocus={() => {
-                  setIsShownKeyBoard(true);
-                }}
+                onFocus={handleFocus}
                 onChangeText={(value) =>
                   setstate((prevState) => ({ ...prevState, password: value }))
                 }

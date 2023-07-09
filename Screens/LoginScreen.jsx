@@ -28,62 +28,61 @@ export const LoginScreen = () => {
   };
   return (
     <TouchableWithoutFeedback onPress={keyBoardHide}>
-      <View style={styles.container}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.container}>
         <ImageBackground style={styles.imgBg} source={img}>
-          <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}>
-            <View
-              style={{
-                ...styles.form,
-                marginBottom: isShownKeyBoard ? 20 : 0,
-              }}>
-              <View style={styles.title}>
-                <Text style={styles.textTitle}>Увійти</Text>
-              </View>
-
-              <View>
-                <TextInput
-                  placeholder="Адреса електронної пошти"
-                  style={styles.input}
-                  value={state.email}
-                  onFocus={() => {
-                    setIsShownKeyBoard(true);
-                  }}
-                  onChangeText={(value) =>
-                    setstate((prevState) => ({ ...prevState, email: value }))
-                  }
-                />
-              </View>
-
-              <View>
-                <TextInput
-                  placeholder="Пароль"
-                  style={styles.input}
-                  value={state.password}
-                  secureTextEntry={true}
-                  onFocus={() => {
-                    setIsShownKeyBoard(true);
-                  }}
-                  onChangeText={(value) =>
-                    setstate((prevState) => ({ ...prevState, password: value }))
-                  }
-                />
-              </View>
-
-              <TouchableOpacity
-                activeOpacity={0.8}
-                style={styles.button}
-                onPress={keyBoardHide}>
-                <Text style={styles.buttonTitle}>Увійти</Text>
-              </TouchableOpacity>
-
-              <View style={styles.notice}>
-                <Text>Немає акаунту? Зареєструватися</Text>
-              </View>
+          <View
+            style={{
+              ...styles.form,
+              marginBottom: isShownKeyBoard ? -20 : 100,
+            }}>
+            <View style={styles.title}>
+              <Text style={styles.textTitle}>Увійти</Text>
             </View>
-          </KeyboardAvoidingView>
+
+            <View>
+              <TextInput
+                placeholder="Адреса електронної пошти"
+                style={styles.input}
+                value={state.email}
+                onFocus={() => {
+                  setIsShownKeyBoard(true);
+                }}
+                onChangeText={(value) =>
+                  setstate((prevState) => ({ ...prevState, email: value }))
+                }
+              />
+            </View>
+
+            <View>
+              <TextInput
+                placeholder="Пароль"
+                style={styles.input}
+                value={state.password}
+                secureTextEntry={true}
+                onFocus={() => {
+                  setIsShownKeyBoard(true);
+                }}
+                onChangeText={(value) =>
+                  setstate((prevState) => ({ ...prevState, password: value }))
+                }
+              />
+            </View>
+
+            <TouchableOpacity
+              activeOpacity={0.8}
+              style={styles.button}
+              onPress={keyBoardHide}>
+              <Text style={styles.buttonTitle}>Увійти</Text>
+            </TouchableOpacity>
+
+            <View style={styles.notice}>
+              <Text>Немає акаунту? Зареєструватися</Text>
+            </View>
+          </View>
         </ImageBackground>
-      </View>
+      </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   );
 };

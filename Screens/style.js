@@ -14,7 +14,7 @@ export const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderTopRightRadius: 25,
     borderTopLeftRadius: 25,
-    paddingBottom: 100,
+    paddingBottom: 50,
   },
   title: {
     alignItems: "center",
