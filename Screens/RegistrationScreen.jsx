@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Ionicons } from "@expo/vector-icons";
 import {
   Text,
   View,
@@ -9,28 +10,57 @@ import {
   Platform,
   Keyboard,
   TouchableWithoutFeedback,
+  Image,
 } from "react-native";
 
+import foto from "../assets/images/AvatarPhoto.png";
 import img from "../assets/images/PhotoBG.png";
 import { styles } from "./style";
 
-const initialState = {
-  login: "",
-  email: "",
-  password: "",
-};
-
 export const RegistrationScreen = () => {
   const [isShownKey, setIsShownKey] = useState(false);
-  const [state, setstate] = useState(initialState);
-  const handleFocus = () => {
-    setIsShownKey(true);
+  const [isFocus, setIsFocus] = useState({
+    email: false,
+    password: false,
+    login: false,
+  });
+  const [login, setLogin] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  console.log(login);
+  console.log(email);
+  console.log(password);
+
+  const handelChange = (value) => {
+    setLogin((prevState) => ({ ...prevState, login: value }));
+    setEmail((prevState) => ({ ...prevState, email: value }));
+    setPassword((prevState) => ({ ...prevState, password: value }));
+  };
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+  resetForm = () => {
+    setLogin("");
+    setPassword("");
+    setEmail("");
+  };
+
+  const handelSubmit = () => {
+    if (!login || !email || !password)
+      return console.warn(" Введіть будь ласка дані");
+    if (!validateEmail(email))
+      return console.warn(`Некоректна адреса електронної пошти!`);
+    keyBoardHide();
+    resetForm();
   };
   const keyBoardHide = () => {
     setIsShownKey(true);
     Keyboard.dismiss();
-    setstate(initialState);
+    resetForm();
   };
+
   useEffect(() => {
     const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
       setIsShownKey(true);
@@ -55,6 +85,22 @@ export const RegistrationScreen = () => {
               ...styles.form,
               paddingBottom: isShownKey ? 20 : 100,
             }}>
+            <View style={styles.avatarContainer}>
+              <Image source={foto} style={styles.avatarImage} />
+              {!foto ? (
+                <TouchableOpacity
+                  style={styles.btnAddAvatar}
+                  activeOpacity={0.9}>
+                  <Ionicons name="add" size={20} color="#FF6C00" />
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  style={styles.btnRemoveAvatar}
+                  activeOpacity={0.9}>
+                  <Ionicons name="close" size={20} color="#E8E8E8" />
+                </TouchableOpacity>
+              )}
+            </View>
             <View style={styles.title}>
               <Text style={styles.textTitle}>Реєстрація</Text>
             </View>
@@ -62,44 +108,86 @@ export const RegistrationScreen = () => {
             <View>
               <TextInput
                 placeholder="Логін"
-                style={styles.input}
-                value={state.login}
-                onFocus={handleFocus}
-                onChangeText={(value) =>
-                  setstate((prevState) => ({ ...prevState, login: value }))
-                }
+                style={{
+                  ...styles.input,
+                  borderColor: isFocus.login ? "#FF6C00" : "#F6F6F6",
+                  backgroundColor: isFocus.login ? "#FFFFFF" : "#F6F6F6",
+                }}
+                value={login}
+                onFocus={() => {
+                  setIsFocus({
+                    ...isFocus,
+                    login: true,
+                  });
+                }}
+                onBlur={() => {
+                  setIsFocus({
+                    ...isFocus,
+                    login: false,
+                  });
+                }}
+                onChangeText={handelChange}
               />
             </View>
 
             <View>
               <TextInput
                 placeholder="Адреса електронної пошти"
-                style={styles.input}
-                value={state.email}
-                onFocus={handleFocus}
-                onChangeText={(value) =>
-                  setstate((prevState) => ({ ...prevState, email: value }))
-                }
+                style={{
+                  ...styles.input,
+                  borderColor: isFocus.email ? "#FF6C00" : "#F6F6F6",
+                  backgroundColor: isFocus.email ? "#FFFFFF" : "#F6F6F6",
+                }}
+                inputMode="email"
+                keyboardType="email-address"
+                autoComplete="email"
+                value={email}
+                onFocus={() => {
+                  setIsFocus({
+                    ...isFocus,
+                    email: true,
+                  });
+                }}
+                onBlur={() => {
+                  setIsFocus({
+                    ...isFocus,
+                    email: false,
+                  });
+                }}
+                onChangeText={handelChange}
               />
             </View>
 
             <View>
               <TextInput
                 placeholder="Пароль"
-                style={styles.input}
-                value={state.password}
+                style={{
+                  ...styles.input,
+                  borderColor: isFocus.password ? "#FF6C00" : "#F6F6F6",
+                  backgroundColor: isFocus.password ? "#FFFFFF" : "#F6F6F6",
+                }}
+                value={password}
                 secureTextEntry={true}
-                onFocus={handleFocus}
-                onChangeText={(value) =>
-                  setstate((prevState) => ({ ...prevState, password: value }))
-                }
+                onFocus={() => {
+                  setIsFocus({
+                    ...isFocus,
+                    password: true,
+                  });
+                }}
+                onBlur={() => {
+                  setIsFocus({
+                    ...isFocus,
+                    password: false,
+                  });
+                }}
+                onChangeText={handelChange}
               />
             </View>
 
             <TouchableOpacity
               activeOpacity={0.8}
               style={styles.button}
-              onPress={keyBoardHide}>
+              onPress={handelSubmit}>
               <Text style={styles.buttonTitle}>Зареєструватися</Text>
             </TouchableOpacity>
 

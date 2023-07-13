@@ -13,22 +13,40 @@ import {
 import img from "../assets/images/PhotoBG.png";
 import { styles } from "./style";
 
-const initialState = {
-  email: "",
-  password: "",
-};
-
 export const LoginScreen = () => {
   const [isShownKey, setIsShownKey] = useState(false);
-  const [state, setstate] = useState(initialState);
-  const handleFocus = () => {
-    setIsShownKey(true);
+  const [isFocus, setIsFocus] = useState({
+    email: false,
+    password: false,
+  });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  console.log(email);
+  console.log(password);
+
+  resetForm = () => {
+    setPassword("");
+    setEmail("");
+  };
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   };
 
   const keyBoardHide = () => {
+    if (!email.trim() || !password.trim())
+      return console.warn(" Введіть будь ласка дані");
+    if (!validateEmail(email))
+      return console.warn("Некорректно введена електронна пошта");
+
     setIsShownKey(true);
     Keyboard.dismiss();
-    setstate(initialState);
+    resetForm();
+  };
+  const handelChange = (value) => {
+    setEmail((prevState) => ({ ...prevState, email: value }));
+    setPassword((prevState) => ({ ...prevState, password: value }));
   };
   useEffect(() => {
     const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
@@ -61,25 +79,51 @@ export const LoginScreen = () => {
             <View>
               <TextInput
                 placeholder="Адреса електронної пошти"
-                style={styles.input}
-                value={state.email}
-                onFocus={handleFocus}
-                onChangeText={(value) =>
-                  setstate((prevState) => ({ ...prevState, email: value }))
-                }
+                style={{
+                  ...styles.input,
+                  borderColor: isFocus.email ? "#FF6C00" : "#F6F6F6",
+                  backgroundColor: isFocus.email ? "#FFFFFF" : "#F6F6F6",
+                }}
+                value={email}
+                onFocus={() => {
+                  setIsFocus({
+                    ...isFocus,
+                    email: true,
+                  });
+                }}
+                onBlur={() => {
+                  setIsFocus({
+                    ...isFocus,
+                    email: false,
+                  });
+                }}
+                onChangeText={handelChange}
               />
             </View>
 
             <View>
               <TextInput
                 placeholder="Пароль"
-                style={styles.input}
-                value={state.password}
+                style={{
+                  ...styles.input,
+                  borderColor: isFocus.password ? "#FF6C00" : "#F6F6F6",
+                  backgroundColor: isFocus.password ? "#FFFFFF" : "#F6F6F6",
+                }}
+                value={password}
                 secureTextEntry={true}
-                onFocus={handleFocus}
-                onChangeText={(value) =>
-                  setstate((prevState) => ({ ...prevState, password: value }))
-                }
+                onFocus={() => {
+                  setIsFocus({
+                    ...isFocus,
+                    password: true,
+                  });
+                }}
+                onBlur={() => {
+                  setIsFocus({
+                    ...isFocus,
+                    password: false,
+                  });
+                }}
+                onChangeText={handelChange}
               />
             </View>
 
