@@ -27,24 +27,17 @@ export const RegistrationScreen = () => {
   const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  console.log(login);
-  console.log(email);
-  console.log(password);
+  console.log(login, email, password);
 
-  const handelChange = (value) => {
-    setLogin((prevState) => ({ ...prevState, login: value }));
-    setEmail((prevState) => ({ ...prevState, email: value }));
-    setPassword((prevState) => ({ ...prevState, password: value }));
-  };
-
-  const validateEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
   resetForm = () => {
     setLogin("");
     setPassword("");
     setEmail("");
+  };
+  const validateEmail = (email) => {
+    console.log(email);
+    const emailRegex = /^w+([.-]?w+)*@w+([.-]?w+)*(.ww+)+$/;
+    return console.log(emailRegex.test(email));
   };
 
   const handelSubmit = () => {
@@ -126,7 +119,9 @@ export const RegistrationScreen = () => {
                     login: false,
                   });
                 }}
-                onChangeText={handelChange}
+                onChangeText={(value) => {
+                  setLogin((prevState) => ({ ...prevState, login: value }));
+                }}
               />
             </View>
 
@@ -154,7 +149,9 @@ export const RegistrationScreen = () => {
                     email: false,
                   });
                 }}
-                onChangeText={handelChange}
+                onChangeText={(value) => {
+                  setEmail((prevState) => ({ ...prevState, email: value }));
+                }}
               />
             </View>
 
@@ -180,7 +177,12 @@ export const RegistrationScreen = () => {
                     password: false,
                   });
                 }}
-                onChangeText={handelChange}
+                onChangeText={(value) => {
+                  setPassword((prevState) => ({
+                    ...prevState,
+                    password: value,
+                  }));
+                }}
               />
             </View>
 
