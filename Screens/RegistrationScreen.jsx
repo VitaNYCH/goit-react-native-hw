@@ -119,8 +119,8 @@ export const RegistrationScreen = () => {
                     login: false,
                   });
                 }}
-                onChangeText={(value) => {
-                  setLogin((prevState) => ({ ...prevState, login: value }));
+                onChangeText={(login) => {
+                  setLogin((prevState) => ({ ...prevState, login }));
                 }}
               />
             </View>
@@ -149,8 +149,8 @@ export const RegistrationScreen = () => {
                     email: false,
                   });
                 }}
-                onChangeText={(value) => {
-                  setEmail((prevState) => ({ ...prevState, email: value }));
+                onChangeText={(email) => {
+                  setEmail((prevState) => ({ ...prevState, email }));
                 }}
               />
             </View>
@@ -177,10 +177,10 @@ export const RegistrationScreen = () => {
                     password: false,
                   });
                 }}
-                onChangeText={(value) => {
+                onChangeText={(password) => {
                   setPassword((prevState) => ({
                     ...prevState,
-                    password: value,
+                    password,
                   }));
                 }}
               />
