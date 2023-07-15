@@ -10,10 +10,10 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from "react-native";
-import img from "../assets/images/PhotoBG.png";
-import { styles } from "./style";
+import img from "../../assets/images/PhotoBG.png";
+import { styles } from "../style";
 
-export const LoginScreen = () => {
+export const LoginScreen = ({ navigation }) => {
   const [isShownKey, setIsShownKey] = useState(false);
   const [isFocus, setIsFocus] = useState({
     email: false,
@@ -44,10 +44,7 @@ export const LoginScreen = () => {
     Keyboard.dismiss();
     resetForm();
   };
-  const handelChange = (value) => {
-    setEmail((prevState) => ({ ...prevState, email: value }));
-    setPassword((prevState) => ({ ...prevState, password: value }));
-  };
+
   useEffect(() => {
     const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
       setIsShownKey(true);
@@ -97,7 +94,9 @@ export const LoginScreen = () => {
                     email: false,
                   });
                 }}
-                onChangeText={handelChange}
+                onChangeText={(email) => {
+                  setEmail((prevState) => ({ ...prevState, email }));
+                }}
               />
             </View>
 
@@ -123,7 +122,12 @@ export const LoginScreen = () => {
                     password: false,
                   });
                 }}
-                onChangeText={handelChange}
+                onChangeText={(password) => {
+                  setPassword((prevState) => ({
+                    ...prevState,
+                    password,
+                  }));
+                }}
               />
             </View>
 
@@ -134,9 +138,14 @@ export const LoginScreen = () => {
               <Text style={styles.buttonTitle}>Увійти</Text>
             </TouchableOpacity>
 
-            <View style={styles.notice}>
-              <Text>Немає акаунту? Зареєструватися</Text>
-            </View>
+            <TouchableOpacity
+              style={styles.notice}
+              onPress={() => navigation.navigate("Register")}>
+              <Text>
+                Немає акаунту?
+                <Text style={styles.linkButton}>Зареєструватися</Text>
+              </Text>
+            </TouchableOpacity>
           </View>
         </ImageBackground>
       </KeyboardAvoidingView>

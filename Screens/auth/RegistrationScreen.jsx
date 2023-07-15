@@ -13,11 +13,11 @@ import {
   Image,
 } from "react-native";
 
-import foto from "../assets/images/AvatarPhoto.png";
-import img from "../assets/images/PhotoBG.png";
-import { styles } from "./style";
+import foto from "../../assets/images/AvatarPhoto.png";
+import img from "../../assets/images/PhotoBG.png";
+import { styles } from "../style";
 
-export const RegistrationScreen = () => {
+export const RegistrationScreen = ({ navigation }) => {
   const [isShownKey, setIsShownKey] = useState(false);
   const [isFocus, setIsFocus] = useState({
     email: false,
@@ -36,7 +36,8 @@ export const RegistrationScreen = () => {
   };
   const validateEmail = (email) => {
     console.log(email);
-    const emailRegex = /^w+([.-]?w+)*@w+([.-]?w+)*(.ww+)+$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    console.log(emailRegex);
     return console.log(emailRegex.test(email));
   };
 
@@ -193,9 +194,13 @@ export const RegistrationScreen = () => {
               <Text style={styles.buttonTitle}>Зареєструватися</Text>
             </TouchableOpacity>
 
-            <View style={styles.notice}>
-              <Text style={styles.textNotice}>Вже є акаунт? Увійти</Text>
-            </View>
+            <TouchableOpacity
+              style={styles.notice}
+              onPress={() => navigation.navigate("Login")}>
+              <Text style={styles.textNotice}>
+                Вже є акаунт?<Text>Увійти</Text>
+              </Text>
+            </TouchableOpacity>
           </View>
         </ImageBackground>
       </KeyboardAvoidingView>

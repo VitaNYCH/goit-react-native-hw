@@ -109,4 +109,7 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: "Roboto-Regular",
   },
+  linkButton: {
+    textDecorationLine: "underline",
+  },
 });

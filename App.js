@@ -1,6 +1,7 @@
-import { RegistrationScreen } from "./Screens/RegistrationScreen";
+import { RegistrationScreen } from "./Screens/auth/RegistrationScreen";
 import { createStackNavigator } from "@react-navigation/stack";
-import { LoginScreen } from "./Screens/LoginScreen";
+import { NavigationContainer } from "@react-navigation/native";
+import { LoginScreen } from "./Screens/auth/LoginScreen";
 import { useFonts } from "expo-font";
 
 const Stack = createStackNavigator();
@@ -14,9 +15,19 @@ export default function App() {
   }
 
   return (
-    <>
-      <RegistrationScreen />
-      {/* <LoginScreen /> */}
-    </>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="Login"
+          component={LoginScreen}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="Register"
+          component={RegistrationScreen}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
