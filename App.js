@@ -1,10 +1,13 @@
-import { RegistrationScreen } from "./Screens/auth/RegistrationScreen";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
-import { LoginScreen } from "./Screens/auth/LoginScreen";
 import { useFonts } from "expo-font";
 
+import { LoginScreen } from "./Screens/auth/LoginScreen";
+import { RegistrationScreen } from "./Screens/auth/RegistrationScreen";
+import { HomeScreen } from "./Screens/main/Home";
+
 const Stack = createStackNavigator();
+
 export default function App() {
   const [fontsLoaded] = useFonts({
     "Roboto-Medium": require("./assets/fonts/Roboto-Medium.ttf"),
@@ -17,7 +20,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen
+        {/* <Stack.Screen
           options={{ headerShown: false }}
           name="Login"
           component={LoginScreen}
@@ -26,6 +29,11 @@ export default function App() {
           options={{ headerShown: false }}
           name="Register"
           component={RegistrationScreen}
+        /> */}
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="Home"
+          component={HomeScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>
