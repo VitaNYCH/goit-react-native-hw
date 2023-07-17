@@ -29,7 +29,7 @@ export const RegistrationScreen = ({ navigation }) => {
   const [password, setPassword] = useState("");
   console.log(login, email, password);
 
-  resetForm = () => {
+  const resetForm = () => {
     setLogin("");
     setPassword("");
     setEmail("");

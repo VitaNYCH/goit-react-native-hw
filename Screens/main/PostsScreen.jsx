@@ -1,9 +1,17 @@
-import React from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, Image, FlatList, StyleSheet } from "react-native";
 
 import foto from "../../assets/images/AvatarPhoto.png";
 
-export const PostScreen = () => {
+export const PostScreen = ({ route }) => {
+  const [posts, setPosts] = useState([]);
+  console.log(route.params);
+  useEffect(() => {
+    if (route.params) {
+      setPosts((prevState) => [...prevState, route.params]);
+    }
+  }, [route.params]);
+  console.log(posts);
   return (
     <View style={styles.container}>
       <View style={styles.userWrapper}>
@@ -13,7 +21,18 @@ export const PostScreen = () => {
           <Text style={styles.avatarEmail}>email@example.com</Text>
         </View>
       </View>
-      <View style={styles.navTabs}></View>
+      {/* <View style={styles.navTabs}></View> */}
+      <FlatList
+        data={posts}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item }) => (
+          <View>
+            <Image source={{ uri: item.photo }} style={styles.photoGallery} />
+            <Text>{item.picName}</Text>
+            <Text>{item.location}</Text>
+          </View>
+        )}
+      />
     </View>
   );
 };
@@ -21,13 +40,13 @@ export const PostScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "flex-start",
-    justifyContent: "flex-start",
+    // alignItems: "flex-start",
+    // justifyContent: "flex-start",
     backgroundColor: "#fff",
   },
   userWrapper: {
     flexDirection: "row",
-    alignItems: "center",
+    // alignItems: "center",
     marginTop: 20,
     marginLeft: 30,
   },
@@ -49,5 +68,9 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto-Regular",
 
     color: "rgba(33, 33, 33, 0.8)",
+  },
+  photoGallery: {
+    width: 343,
+    height: 240,
   },
 });
