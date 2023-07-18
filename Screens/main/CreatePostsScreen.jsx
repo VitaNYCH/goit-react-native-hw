@@ -12,6 +12,8 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Camera } from "expo-camera";
+import * as Location from "expo-location";
+
 import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
 
 export const CreatePostsScreen = ({ navigation }) => {
@@ -19,21 +21,22 @@ export const CreatePostsScreen = ({ navigation }) => {
   const [photo, setPhoto] = useState(null);
   const [isShownKey, setIsShownKey] = useState(false);
   const [picName, setPicName] = useState("");
-  const [location, setLocation] = useState("");
+  const [postLocation, setPostLocation] = useState("");
+  const [postAddress, setPostAddress] = useState("");
   const [isFocus, setIsFocus] = useState({
     picName: false,
-    location: false,
+    postLocation: false,
   });
   const resetForm = () => {
     setPhoto("");
     setPicName("");
-    setLocation("");
+    setPostLocation("");
   };
 
   const handelSubmit = () => {
     if (!photo || !picName || !location)
       return console.warn(" Введіть будь ласка дані");
-    navigation.navigate("Posts", { photo, picName, location });
+    navigation.navigate("DefaultPostScreen", { photo, picName, postAddress });
     keyBoardHide();
     resetForm();
   };
@@ -60,10 +63,36 @@ export const CreatePostsScreen = ({ navigation }) => {
     };
   }, []);
 
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setPostLocation(location);
+    })();
+  }, []);
+
   const takePhoto = async () => {
     const photo = await camera.takePictureAsync();
-    console.log(photo.uri);
+    const location = await Location.getCurrentPositionAsync();
+    const coords = {
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude,
+    };
+    const [address] = await Location.reverseGeocodeAsync({
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude,
+    });
+    setPostAddress(address.city);
+    setPostLocation(coords);
+
+    console.log(postAddress);
     setPhoto(photo.uri);
+    console.log(photo.uri);
   };
   return (
     <TouchableWithoutFeedback onPress={keyBoardHide}>
@@ -134,24 +163,26 @@ export const CreatePostsScreen = ({ navigation }) => {
               />
               <TextInput
                 placeholder="Місцевість..."
-                value={location}
+                value={postLocation}
                 style={{
                   ...styles.inputLocation,
-                  borderBottomColor: isFocus.location ? "#FF6C00" : "#F6F6F6",
+                  borderBottomColor: isFocus.postLocation
+                    ? "#FF6C00"
+                    : "#F6F6F6",
                 }}
                 onFocus={() => {
                   setIsFocus({
                     ...isFocus,
-                    location: true,
+                    postLocation: true,
                   });
                 }}
                 onBlur={() => {
                   setIsFocus({
                     ...isFocus,
-                    location: false,
+                    postLocation: false,
                   });
                 }}
-                onChangeText={setLocation}
+                onChangeText={setPostLocation}
               />
             </View>
             <TouchableOpacity

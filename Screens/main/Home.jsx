@@ -57,7 +57,7 @@ export const HomeScreen = ({ navigation }) => {
       />
       <MainTab.Screen
         options={{
-          tabBarIcon: () => (
+          tabBarIcon: ({ focused }) => (
             <View style={{ ...styles.iconAdd, backgroundColor: "#FF6C00" }}>
               <Feather name="plus" size={24} color="white" />
             </View>

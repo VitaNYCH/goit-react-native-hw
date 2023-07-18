@@ -1,76 +1,39 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, Image, FlatList, StyleSheet } from "react-native";
+import React from "react";
+import {} from "react-native";
+import { createStackNavigator } from "@react-navigation/stack";
 
-import foto from "../../assets/images/AvatarPhoto.png";
+import { CommentsScreen } from "../nestedScreens/CommentsScreen";
+import { MapScreen } from "../nestedScreens/MapScreen";
+import { DefaultPostsScreen } from "../nestedScreens/DefaultPostsScreen";
 
-export const PostScreen = ({ route }) => {
-  const [posts, setPosts] = useState([]);
-  console.log(route.params);
-  useEffect(() => {
-    if (route.params) {
-      setPosts((prevState) => [...prevState, route.params]);
-    }
-  }, [route.params]);
-  console.log(posts);
+const NestedScreen = createStackNavigator();
+
+export const PostScreen = () => {
   return (
-    <View style={styles.container}>
-      <View style={styles.userWrapper}>
-        <Image source={foto} style={styles.avatarImg} />
-        <View>
-          <Text style={styles.avatarName}>Natali Romanova</Text>
-          <Text style={styles.avatarEmail}>email@example.com</Text>
-        </View>
-      </View>
-      {/* <View style={styles.navTabs}></View> */}
-      <FlatList
-        data={posts}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => (
-          <View>
-            <Image source={{ uri: item.photo }} style={styles.photoGallery} />
-            <Text>{item.picName}</Text>
-            <Text>{item.location}</Text>
-          </View>
-        )}
+    <NestedScreen.Navigator>
+      <NestedScreen.Screen
+        name="DefaultPostScreen"
+        component={DefaultPostsScreen}
+        options={{ headerShown: false }}
       />
-    </View>
+      <NestedScreen.Screen
+        name="Comments"
+        component={CommentsScreen}
+        options={{
+          headerTitle: "Коментарі",
+          headerTitleAlign: "center",
+          headerStyle: {
+            height: 88,
+            backgroundColor: "#fff",
+          },
+          headerTitleStyle: {
+            marginTop: 10,
+            fontFamily: "Roboto-Regular",
+            fontSize: 20,
+          },
+        }}
+      />
+      <NestedScreen.Screen name="Map" component={MapScreen} />
+    </NestedScreen.Navigator>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    // alignItems: "flex-start",
-    // justifyContent: "flex-start",
-    backgroundColor: "#fff",
-  },
-  userWrapper: {
-    flexDirection: "row",
-    // alignItems: "center",
-    marginTop: 20,
-    marginLeft: 30,
-  },
-  avatarImg: {
-    width: 60,
-    height: 60,
-
-    marginRight: 8,
-
-    backgroundColor: "#f6f6f6",
-    borderRadius: 16,
-  },
-  avatarName: {
-    fontFamily: "Roboto-Regular",
-
-    color: "#212121",
-  },
-  avatarEmail: {
-    fontFamily: "Roboto-Regular",
-
-    color: "rgba(33, 33, 33, 0.8)",
-  },
-  photoGallery: {
-    width: 343,
-    height: 240,
-  },
-});
