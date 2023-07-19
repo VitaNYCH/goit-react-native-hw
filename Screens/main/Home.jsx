@@ -9,9 +9,6 @@ import { ProfileScreen } from "./ProfileScreen";
 const MainTab = createBottomTabNavigator();
 
 export const HomeScreen = ({ navigation }) => {
-  const handelTrash = () => {
-    navigation.navigate("DefaultPostsScreen");
-  };
   return (
     <MainTab.Navigator
       screenOptions={() => ({
@@ -28,33 +25,7 @@ export const HomeScreen = ({ navigation }) => {
       <MainTab.Screen
         options={{
           tabBarIcon: () => <Feather name="grid" size={24} color="black" />,
-          headerTitle: "Публікації",
-          headerTitleAlign: "center",
-          headerStyle: {
-            height: 88,
-            backgroundColor: "#fff",
-          },
-          headerTitleStyle: {
-            marginTop: 10,
-            fontFamily: "Roboto-Regular",
-            fontSize: 20,
-          },
-          headerRight: () => (
-            <TouchableOpacity
-              onPress={() => {
-                // navigation.navigate("Login");
-              }}
-              title="logOut"
-              color="#fff">
-              <Feather
-                name="log-out"
-                size={24}
-                color="#BDBDBD"
-                marginRight={20}
-                marginTop={10}
-              />
-            </TouchableOpacity>
-          ),
+          headerShown: false,
         }}
         name="Posts"
         component={PostScreen}
