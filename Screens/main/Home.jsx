@@ -37,7 +37,7 @@ export const HomeScreen = ({ navigation }) => {
               <Feather name="plus" size={24} color="white" />
             </View>
           ),
-
+          tabBarStyle: { display: "none" },
           headerTitle: "Створити публікацію",
           headerTitleAlign: "center",
           headerStyle: {

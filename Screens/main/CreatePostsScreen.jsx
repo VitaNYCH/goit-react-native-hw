@@ -127,7 +127,7 @@ export const CreatePostsScreen = ({ navigation }) => {
           <View
             style={{
               ...styles.createForm,
-              marginBottom: isShownKey ? 20 : 80,
+              marginBottom: isShownKey ? 20 : 130,
             }}>
             <View>
               <TextInput
