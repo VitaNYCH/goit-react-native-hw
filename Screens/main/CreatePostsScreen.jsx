@@ -21,16 +21,17 @@ export const CreatePostsScreen = ({ navigation }) => {
   const [photo, setPhoto] = useState(null);
   const [isShownKey, setIsShownKey] = useState(false);
   const [picName, setPicName] = useState("");
-  const [postLocation, setPostLocation] = useState("");
+  const [postLocation, setPostLocation] = useState(null);
   const [postAddress, setPostAddress] = useState("");
   const [isFocus, setIsFocus] = useState({
     picName: false,
     postLocation: false,
   });
+  console.log(postLocation);
   const resetForm = () => {
     setPhoto("");
     setPicName("");
-    setPostLocation("");
+    setPostLocation(null);
   };
 
   const handelSubmit = () => {

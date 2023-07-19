@@ -20,6 +20,7 @@ export const DefaultPostsScreen = ({ route, navigation }) => {
     }
   }, [route.params]);
   console.log(posts);
+
   return (
     <View style={styles.container}>
       <View style={styles.userWrapper}>
