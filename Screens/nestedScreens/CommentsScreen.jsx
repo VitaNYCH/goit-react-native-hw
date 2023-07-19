@@ -7,13 +7,16 @@ import {
   View,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
+import { useState, useEffect } from "react";
 
-export const CommentsScreen = () => {
+export const CommentsScreen = ({ route }) => {
+  const { photo } = route.params;
+  console.log(route);
   return (
     <TouchableWithoutFeedback>
       <View style={styles.container}>
         <View style={styles.picturePost}>
-          <Image />
+          <Image source={{ uri: photo }} style={styles.Image} />
         </View>
         <TextInput
           placeholderTextColor={"#BDBDBD"}
@@ -37,7 +40,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     paddingHorizontal: 16,
   },
-
+  picturePost: {
+    marginTop: 32,
+    marginBottom: 16,
+  },
+  Image: {
+    height: 240,
+    borderRadius: 8,
+  },
   input: {
     alignItems: "center",
     height: 50,

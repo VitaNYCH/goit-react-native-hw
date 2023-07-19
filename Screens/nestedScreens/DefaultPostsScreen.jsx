@@ -48,7 +48,9 @@ export const DefaultPostsScreen = ({ route, navigation }) => {
                 }}>
                 <TouchableOpacity
                   style={styles.commentIcon}
-                  onPress={() => navigation.navigate("Comments")}>
+                  onPress={() =>
+                    navigation.navigate("Comments", { photo: item.photo })
+                  }>
                   <Feather
                     name="message-circle"
                     size={24}

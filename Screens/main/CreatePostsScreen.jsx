@@ -36,7 +36,11 @@ export const CreatePostsScreen = ({ navigation }) => {
   const handelSubmit = () => {
     if (!photo || !picName || !location)
       return console.warn(" Введіть будь ласка дані та завантажте фото");
-    navigation.navigate("DefaultPostScreen", { photo, picName, postAddress });
+    navigation.navigate("DefaultPostScreen", {
+      photo,
+      picName,
+      postAddress,
+    });
     keyBoardHide();
     resetForm();
   };
