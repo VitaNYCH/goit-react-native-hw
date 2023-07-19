@@ -37,11 +37,14 @@ export const DefaultPostsScreen = ({ route, navigation }) => {
           (
             <View style={styles.postsWrapper}>
               <Image source={{ uri: item.photo }} style={styles.photoGallery} />
-              <Text style={{ marginTop: 10 }}>{item.picName}</Text>
+              <Text style={{ marginTop: 10, marginLeft: 10 }}>
+                {item.picName}
+              </Text>
               <View
                 style={{
                   flex: 1,
                   flexDirection: "row",
+                  marginLeft: 10,
                 }}>
                 <TouchableOpacity
                   style={styles.commentIcon}

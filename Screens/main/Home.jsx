@@ -9,6 +9,9 @@ import { ProfileScreen } from "./ProfileScreen";
 const MainTab = createBottomTabNavigator();
 
 export const HomeScreen = ({ navigation }) => {
+  const handelTrash = () => {
+    navigation.navigate("DefaultPostsScreen");
+  };
   return (
     <MainTab.Navigator
       screenOptions={() => ({
@@ -18,6 +21,7 @@ export const HomeScreen = ({ navigation }) => {
           paddingRight: 30,
           paddingLeft: 30,
         },
+        tabBarHideOnKeyboard: true,
         tabBarInactiveTintColor: "rgba(33, 33, 33, 0.8)",
         tabBarActiveTintColor: "#FFFFFF",
       })}>
@@ -57,11 +61,12 @@ export const HomeScreen = ({ navigation }) => {
       />
       <MainTab.Screen
         options={{
-          tabBarIcon: ({ focused }) => (
+          tabBarIcon: () => (
             <View style={{ ...styles.iconAdd, backgroundColor: "#FF6C00" }}>
               <Feather name="plus" size={24} color="white" />
             </View>
           ),
+
           headerTitle: "Створити публікацію",
           headerTitleAlign: "center",
           headerStyle: {
@@ -127,5 +132,15 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: "center",
     justifyContent: "center",
+  },
+  trashBtn: {
+    position: "relative",
+
+    justifyContent: "center",
+    alignItems: "center",
+    width: 70,
+    height: 40,
+    backgroundColor: "#F6F6F6",
+    borderRadius: 50,
   },
 });
