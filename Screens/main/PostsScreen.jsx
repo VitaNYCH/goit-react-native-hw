@@ -30,7 +30,7 @@ export const PostScreen = ({ navigation }) => {
           headerRight: () => (
             <TouchableOpacity
               onPress={() => {
-                // navigation.navigate("Login");
+                navigation.navigate("Login");
               }}
               title="logOut"
               color="#fff">

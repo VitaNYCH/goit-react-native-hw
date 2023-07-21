@@ -10,6 +10,9 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from "react-native";
+import { useDispatch } from "react-redux";
+
+import { authSignInUser } from "../../redux/auth/authOperations";
 import img from "../../assets/images/PhotoBG.png";
 import { styles } from "../style";
 
@@ -19,10 +22,14 @@ export const LoginScreen = ({ navigation }) => {
     email: false,
     password: false,
   });
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
   console.log(email);
   console.log(password);
+  const data = { ...email, ...password };
+  console.log(data);
+
+  const dispatch = useDispatch();
 
   resetForm = () => {
     setPassword("");
@@ -31,18 +38,21 @@ export const LoginScreen = ({ navigation }) => {
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+    return emailRegex.test(email.email);
+  };
+
+  const handelSubmit = () => {
+    if (!email || !password) return console.warn(" Введіть будь ласка дані");
+    if (!validateEmail(email))
+      return console.warn("Некорректно введена електронна пошта");
+    dispatch(authSignInUser(data));
+    keyBoardHide();
+    resetForm();
   };
 
   const keyBoardHide = () => {
-    if (!email.trim() || !password.trim())
-      return console.warn(" Введіть будь ласка дані");
-    if (!validateEmail(email))
-      return console.warn("Некорректно введена електронна пошта");
-
     setIsShownKey(true);
     Keyboard.dismiss();
-    resetForm();
   };
 
   useEffect(() => {
@@ -134,7 +144,7 @@ export const LoginScreen = ({ navigation }) => {
             <TouchableOpacity
               activeOpacity={0.8}
               style={styles.button}
-              onPress={keyBoardHide}>
+              onPress={handelSubmit}>
               <Text style={styles.buttonTitle}>Увійти</Text>
             </TouchableOpacity>
 

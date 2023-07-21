@@ -1,14 +1,19 @@
-import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
+import { useState } from "react";
 import { useFonts } from "expo-font";
+import { Provider } from "react-redux";
+import { onAuthStateChanged } from "firebase/auth";
 
-import { LoginScreen } from "./Screens/auth/LoginScreen";
-import { RegistrationScreen } from "./Screens/auth/RegistrationScreen";
-import { HomeScreen } from "./Screens/main/Home";
-
-const Stack = createStackNavigator();
+import { useRoute } from "./router";
+import { store } from "./redux/store";
+import { auth } from "./firebase/config";
 
 export default function App() {
+  const [user, setUser] = useState(null);
+
+  onAuthStateChanged(auth, (user) => setUser(user));
+
+  const routing = useRoute(user);
   const [fontsLoaded] = useFonts({
     "Roboto-Medium": require("./assets/fonts/Roboto-Medium.ttf"),
     "Roboto-Regular": require("./assets/fonts/Roboto-Regular.ttf"),
@@ -18,24 +23,8 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        {/* <Stack.Screen
-          options={{ headerShown: false }}
-          name="Login"
-          component={LoginScreen}
-        />
-        <Stack.Screen
-          options={{ headerShown: false }}
-          name="Register"
-          component={RegistrationScreen}
-        /> */}
-        <Stack.Screen
-          options={{ headerShown: false }}
-          name="Home"
-          component={HomeScreen}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>{routing}</NavigationContainer>
+    </Provider>
   );
 }
