@@ -22,8 +22,8 @@ export const LoginScreen = ({ navigation }) => {
     email: false,
     password: false,
   });
-  const [email, setEmail] = useState(null);
-  const [password, setPassword] = useState(null);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   console.log(email);
   console.log(password);
   const data = { ...email, ...password };
@@ -31,7 +31,7 @@ export const LoginScreen = ({ navigation }) => {
 
   const dispatch = useDispatch();
 
-  resetForm = () => {
+  const resetForm = () => {
     setPassword("");
     setEmail("");
   };
