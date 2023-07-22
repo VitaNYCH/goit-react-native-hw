@@ -5,9 +5,10 @@ import {
   signOut,
   updateProfile,
 } from "firebase/auth";
-import { updateUserProfile, authStateChange } from "./authReducer";
 import { auth } from "../../firebase/config";
 import { authSlice } from "./authReducer";
+
+const { updateUserProfile, authStateChange, authSignOut } = authSlice.actions;
 
 export const authSignUpUser =
   ({ login, email, password }) =>
@@ -25,7 +26,7 @@ export const authSignUpUser =
         login: displayName,
         userId: uid,
       };
-      dispatch(authSlice.actions.updateUserProfile(userUpdateSuccess));
+      dispatch(updateUserProfile(userUpdateSuccess));
     } catch (error) {
       console.log(error.message);
     }
@@ -43,7 +44,12 @@ export const authSignInUser =
   };
 
 export const authSignOutUser = () => async (dispatch, getState) => {
-  await signOut();
+  try {
+    await signOut(auth);
+    dispatch(authSignOut());
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const authStateChangeUser = () => async (dispatch, getState) => {
@@ -54,8 +60,8 @@ export const authStateChangeUser = () => async (dispatch, getState) => {
         userId: user.uid,
       };
 
-      dispatch(authSlice.actions.authStateChange({ stateChange: true }));
-      dispatch(authSlice.actions.updateUserProfile(userUpdateSuccess));
+      dispatch(authStateChange({ stateChange: true }));
+      dispatch(updateUserProfile(userUpdateSuccess));
     }
   });
 };

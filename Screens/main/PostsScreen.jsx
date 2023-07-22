@@ -36,9 +36,7 @@ export const PostScreen = ({ navigation }) => {
           },
           headerRight: () => (
             <TouchableOpacity
-              onPress={() => {
-                handlerSignOut;
-              }}
+              onPress={handlerSignOut}
               title="logOut"
               color="#fff">
               <Feather
