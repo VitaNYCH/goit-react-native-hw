@@ -46,6 +46,7 @@ export const LoginScreen = ({ navigation }) => {
     if (!validateEmail(email))
       return console.warn("Некорректно введена електронна пошта");
     dispatch(authSignInUser(data));
+
     keyBoardHide();
     resetForm();
   };

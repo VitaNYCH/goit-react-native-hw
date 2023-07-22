@@ -6,10 +6,17 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { CommentsScreen } from "../nestedScreens/CommentsScreen";
 import { MapScreen } from "../nestedScreens/MapScreen";
 import { DefaultPostsScreen } from "../nestedScreens/DefaultPostsScreen";
+import { authSignOutUser } from "../../redux/auth/authOperations";
+import { useDispatch } from "react-redux";
 
 const NestedScreen = createStackNavigator();
 
 export const PostScreen = ({ navigation }) => {
+  const dispatch = useDispatch();
+
+  const handlerSignOut = () => {
+    dispatch(authSignOutUser());
+  };
   return (
     <NestedScreen.Navigator>
       <NestedScreen.Screen
@@ -30,7 +37,7 @@ export const PostScreen = ({ navigation }) => {
           headerRight: () => (
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate("Login");
+                handlerSignOut;
               }}
               title="logOut"
               color="#fff">

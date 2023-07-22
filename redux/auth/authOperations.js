@@ -2,6 +2,7 @@ import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   signInWithEmailAndPassword,
+  signOut,
   updateProfile,
 } from "firebase/auth";
 import { updateUserProfile, authStateChange } from "./authReducer";
@@ -33,7 +34,7 @@ export const authSignUpUser =
 export const authSignInUser =
   ({ email, password }) =>
   async (dispatch, getState) => {
-    console.log({ login, email, password });
+    console.log({ email, password });
     try {
       await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
@@ -41,7 +42,9 @@ export const authSignInUser =
     }
   };
 
-export const authSignOutUser = () => async (dispatch, getState) => {};
+export const authSignOutUser = () => async (dispatch, getState) => {
+  await signOut();
+};
 
 export const authStateChangeUser = () => async (dispatch, getState) => {
   await onAuthStateChanged(auth, (user) => {
