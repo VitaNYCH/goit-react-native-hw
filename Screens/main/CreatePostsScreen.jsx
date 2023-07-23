@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { ref, uploadBytes } from "firebase/storage";
+
 import {
   View,
   Text,
@@ -15,6 +17,8 @@ import { Camera } from "expo-camera";
 import * as Location from "expo-location";
 
 import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
+
+import { db, storage } from "../../firebase/config";
 
 export const CreatePostsScreen = ({ navigation }) => {
   const [camera, setCamera] = useState(null);
@@ -42,6 +46,7 @@ export const CreatePostsScreen = ({ navigation }) => {
       picName,
       postAddress,
     });
+    uploadPhotoToServer();
     keyBoardHide();
     resetForm();
   };
@@ -99,6 +104,24 @@ export const CreatePostsScreen = ({ navigation }) => {
     setPhoto(photo.uri);
     console.log(photo.uri);
   };
+
+  const uploadPhotoToServer = async () => {
+    try {
+      const response = await fetch(photo);
+      const file = await response.blob();
+      console.log(file);
+      const uniqePostId = Date.now().toString();
+      const storageRef = await ref(storage, `postImage/${uniqePostId}`);
+
+      await uploadBytes(storageRef, file);
+      const getStorageRef = await getDownloadURL(ref(storageRef));
+
+      return getStorageRef;
+    } catch (error) {
+      throw error;
+    }
+  };
+
   return (
     <TouchableWithoutFeedback onPress={keyBoardHide}>
       <View style={styles.container}>
