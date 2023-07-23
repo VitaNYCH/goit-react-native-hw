@@ -5,15 +5,38 @@ import {
   StyleSheet,
   TextInput,
   View,
+  Keyboard,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+
+import { db } from "../../firebase/config";
+import { doc, setDoc } from "firebase/firestore";
 
 export const CommentsScreen = ({ route }) => {
-  const { photo } = route.params;
+  const [comment, setComment] = useState("");
+
+  const { userId, login } = useSelector((state) => state.auth);
+  const { photo, postId } = route.params;
   console.log(route);
+  const createComment = async () => {
+    const uniqName = Date.now().toString();
+    await setDoc(doc(db, "posts", postId, "comments", uniqName), {
+      login,
+      comment,
+      userId,
+      createdAt: commentDate(),
+    });
+    keyboardHide();
+    setComment("");
+  };
+
+  const keyboardHide = () => {
+    Keyboard.dismiss();
+  };
   return (
-    <TouchableWithoutFeedback>
+    <TouchableWithoutFeedback onPress={keyboardHide}>
       <View style={styles.container}>
         <View style={styles.picturePost}>
           <Image source={{ uri: photo }} style={styles.Image} />
@@ -21,11 +44,12 @@ export const CommentsScreen = ({ route }) => {
         <TextInput
           placeholderTextColor={"#BDBDBD"}
           placeholder={"Коментувати..."}
+          value={comment}
           style={styles.input}
           selectionColor={"#FF6C00"}
-          onChangeText={() => {}}
+          onChangeText={setComment}
         />
-        <TouchableOpacity style={styles.iconBtn} onPress={() => {}}>
+        <TouchableOpacity style={styles.iconBtn} onPress={createComment}>
           <Feather name="send" size={18} color="#fff" style={styles.iconSend} />
         </TouchableOpacity>
       </View>
@@ -74,3 +98,31 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
+
+const commentDate = () => {
+  const date = new Date();
+
+  let day = date.getDate();
+  let month = date.getMonth() + 1;
+  let year = date.getFullYear();
+  let hours = date.getHours();
+  let min = date.getMinutes();
+
+  if (day.length === 1) {
+    day = "0" + day;
+  }
+
+  if (month.length === 1) {
+    month = "0" + month;
+  }
+
+  if (hours.length === 1) {
+    hours = "0" + hours;
+  }
+
+  if (min.length === 1) {
+    min = "0" + min;
+  }
+
+  return `${day} ${month} ${year} | ${hours}:${min}`;
+};

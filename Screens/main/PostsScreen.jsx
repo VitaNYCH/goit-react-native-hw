@@ -20,7 +20,7 @@ export const PostScreen = ({ navigation }) => {
   return (
     <NestedScreen.Navigator>
       <NestedScreen.Screen
-        name="DefaultPostScreen"
+        name="DefaultPostsScreen"
         component={DefaultPostsScreen}
         options={{
           headerTitle: "Публікації",

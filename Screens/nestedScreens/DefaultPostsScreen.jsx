@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import {
   View,
   Text,
@@ -8,18 +9,27 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
+import { collection, getDocs } from "firebase/firestore";
 
 import foto from "../../assets/images/AvatarPhoto.png";
+import { db } from "../../firebase/config";
 
-export const DefaultPostsScreen = ({ route, navigation }) => {
+export const DefaultPostsScreen = ({ navigation }) => {
   const [posts, setPosts] = useState([]);
-  console.log(route.params);
+  const { login, email } = useSelector((state) => state.auth);
   useEffect(() => {
-    if (route.params) {
-      setPosts((prevState) => [...prevState, route.params]);
-    }
-  }, [route.params]);
+    getAllPosts();
+  }, []);
   console.log(posts);
+
+  const getAllPosts = async () => {
+    const querySnapshot = await getDocs(collection(db, "posts"));
+    if (querySnapshot) {
+      setPosts(
+        querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+      );
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -50,7 +60,10 @@ export const DefaultPostsScreen = ({ route, navigation }) => {
                 <TouchableOpacity
                   style={styles.commentIcon}
                   onPress={() =>
-                    navigation.navigate("Comments", { photo: item.photo })
+                    navigation.navigate("Comments", {
+                      photo: item.photo,
+                      postId: item.id,
+                    })
                   }>
                   <Feather
                     name="message-circle"
@@ -61,7 +74,10 @@ export const DefaultPostsScreen = ({ route, navigation }) => {
                   />
                   <Text style={styles.commentCount}>0</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => navigation.navigate("Map")}>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate("Map", { location: item.postLocation })
+                  }>
                   <Feather
                     name="map-pin"
                     size={24}

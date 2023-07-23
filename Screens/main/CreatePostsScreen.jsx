@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { ref, uploadBytes } from "firebase/storage";
-
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { addDoc, collection } from "firebase/firestore";
+import { useSelector } from "react-redux";
 import {
   View,
   Text,
@@ -32,21 +33,21 @@ export const CreatePostsScreen = ({ navigation }) => {
     postLocation: false,
   });
   console.log(postLocation);
+
+  const { login, userId } = useSelector((state) => state.auth);
   const resetForm = () => {
     setPhoto("");
     setPicName("");
     setPostLocation(null);
+    setPostAddress("");
   };
 
   const handelSubmit = () => {
-    if (!photo || !picName || !location)
+    if (!photo || !picName)
       return console.warn(" Введіть будь ласка дані та завантажте фото");
-    navigation.navigate("DefaultPostScreen", {
-      photo,
-      picName,
-      postAddress,
-    });
-    uploadPhotoToServer();
+    uploadPostToServer();
+    navigation.navigate("DefaultPostsScreen");
+
     keyBoardHide();
     resetForm();
   };
@@ -103,6 +104,23 @@ export const CreatePostsScreen = ({ navigation }) => {
     console.log(postAddress);
     setPhoto(photo.uri);
     console.log(photo.uri);
+  };
+
+  const uploadPostToServer = async () => {
+    const photo = await uploadPhotoToServer();
+    try {
+      const docRef = await addDoc(collection(db, "posts"), {
+        photo,
+        postAddress,
+        postLocation,
+        picName,
+        userId,
+        login,
+      });
+      console.log("Document written with ID: ", docRef.id);
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
   };
 
   const uploadPhotoToServer = async () => {
@@ -191,7 +209,7 @@ export const CreatePostsScreen = ({ navigation }) => {
               />
               <TextInput
                 placeholder="Місцевість..."
-                value={postLocation}
+                value={postAddress}
                 style={{
                   ...styles.inputLocation,
                   borderBottomColor: isFocus.postLocation
@@ -210,7 +228,7 @@ export const CreatePostsScreen = ({ navigation }) => {
                     postLocation: false,
                   });
                 }}
-                onChangeText={setPostLocation}
+                onChangeText={setPostAddress}
               />
             </View>
             <TouchableOpacity
