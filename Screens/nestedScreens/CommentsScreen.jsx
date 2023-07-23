@@ -4,22 +4,31 @@ import {
   Image,
   StyleSheet,
   TextInput,
+  Text,
   View,
   Keyboard,
+  FlatList,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { collection, doc, getDocs, setDoc } from "firebase/firestore";
 
 import { db } from "../../firebase/config";
-import { doc, setDoc } from "firebase/firestore";
+import foto from "../../assets/images/AvatarPhoto.png";
 
 export const CommentsScreen = ({ route }) => {
   const [comment, setComment] = useState("");
+  const [commentList, setCommentList] = useState([]);
 
   const { userId, login } = useSelector((state) => state.auth);
   const { photo, postId } = route.params;
   console.log(route);
+
+  useEffect(() => {
+    getCommentList();
+  }, []);
+
   const createComment = async () => {
     const uniqName = Date.now().toString();
     await setDoc(doc(db, "posts", postId, "comments", uniqName), {
@@ -32,6 +41,17 @@ export const CommentsScreen = ({ route }) => {
     setComment("");
   };
 
+  const getCommentList = async () => {
+    const querySnapshot = await getDocs(
+      collection(db, "posts", postId, "comments")
+    );
+    if (querySnapshot) {
+      setCommentList(
+        querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+      );
+    }
+  };
+
   const keyboardHide = () => {
     Keyboard.dismiss();
   };
@@ -41,6 +61,28 @@ export const CommentsScreen = ({ route }) => {
         <View style={styles.picturePost}>
           <Image source={{ uri: photo }} style={styles.Image} />
         </View>
+        <FlatList
+          data={commentList}
+          renderItem={({ item }) => (
+            <View
+              style={
+                item.userId === userId
+                  ? styles.commentBox
+                  : { ...styles.commentBox, flexDirection: "row-reverse" }
+              }>
+              <View style={styles.commentPostWrapper}>
+                <Text style={styles.commentPost}>{item.comment}</Text>
+                <Text style={styles.commentDate}>{item.createdAt}</Text>
+              </View>
+              <View style={styles.commentAvatar}>
+                {foto ? (
+                  <Image style={styles.commentAvatar} source={foto} />
+                ) : null}
+              </View>
+            </View>
+          )}
+          keyExtractor={(item, index) => index.toString()}
+        />
         <TextInput
           placeholderTextColor={"#BDBDBD"}
           placeholder={"Коментувати..."}
@@ -96,6 +138,38 @@ const styles = StyleSheet.create({
     borderColor: "#FF6C00",
     backgroundColor: "#FF6C00",
     justifyContent: "center",
+  },
+  commentBox: {
+    marginBottom: 24,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    gap: 16,
+  },
+  commentPostWrapper: {
+    backgroundColor: "rgba(0, 0, 0, 0.03)",
+    borderBottomEndRadius: 6,
+    borderTopLeftRadius: 6,
+    borderBottomLeftRadius: 6,
+    padding: 16,
+    width: 250,
+    flexGrow: 1,
+  },
+  commentPost: {
+    fontFamily: "Roboto-Regular",
+    fontSize: 13,
+    color: "#212121",
+  },
+  commentDate: {
+    fontFamily: "Roboto-Regular",
+    fontSize: 10,
+    color: "#bdbdbd",
+  },
+  commentAvatar: {
+    borderRadius: 100,
+    width: 28,
+    height: 28,
+    backgroundColor: "#BDBDBD",
   },
 });
 

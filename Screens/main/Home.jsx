@@ -27,7 +27,7 @@ export const HomeScreen = ({ navigation }) => {
           tabBarIcon: () => <Feather name="grid" size={24} color="black" />,
           headerShown: false,
         }}
-        name="Posts"
+        name="PostsScreen"
         component={PostScreen}
       />
       <MainTab.Screen
@@ -52,7 +52,7 @@ export const HomeScreen = ({ navigation }) => {
           headerLeft: () => (
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate("Posts");
+                navigation.navigate("PostsScreen");
               }}
               title="logOut"
               color="#fff">
@@ -66,7 +66,7 @@ export const HomeScreen = ({ navigation }) => {
             </TouchableOpacity>
           ),
         }}
-        name="Create posts"
+        name="CreatePosts"
         component={CreatePostsScreen}
       />
       <MainTab.Screen
