@@ -11,7 +11,7 @@ import { useDispatch } from "react-redux";
 
 const NestedScreen = createStackNavigator();
 
-export const PostScreen = ({ navigation }) => {
+export const PostsScreen = () => {
   const dispatch = useDispatch();
 
   const handlerSignOut = () => {

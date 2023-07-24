@@ -2,13 +2,16 @@ import React from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { PostScreen } from "./PostsScreen";
+import { PostsScreen } from "./PostsScreen";
 import { CreatePostsScreen } from "./CreatePostsScreen";
 import { ProfileScreen } from "./ProfileScreen";
 
 const MainTab = createBottomTabNavigator();
 
 export const HomeScreen = ({ navigation }) => {
+  const goToPost = () => {
+    navigation.navigate("Posts");
+  };
   return (
     <MainTab.Navigator
       screenOptions={() => ({
@@ -27,8 +30,8 @@ export const HomeScreen = ({ navigation }) => {
           tabBarIcon: () => <Feather name="grid" size={24} color="black" />,
           headerShown: false,
         }}
-        name="PostsScreen"
-        component={PostScreen}
+        name="Posts"
+        component={PostsScreen}
       />
       <MainTab.Screen
         options={{
@@ -50,12 +53,7 @@ export const HomeScreen = ({ navigation }) => {
             fontSize: 20,
           },
           headerLeft: () => (
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate("PostsScreen");
-              }}
-              title="logOut"
-              color="#fff">
+            <TouchableOpacity onPress={goToPost} color="#fff">
               <Feather
                 name="arrow-left"
                 size={24}

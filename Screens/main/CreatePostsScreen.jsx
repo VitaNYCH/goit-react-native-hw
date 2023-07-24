@@ -59,7 +59,7 @@ export const CreatePostsScreen = ({ navigation }) => {
   };
   const handelTrash = () => {
     resetForm();
-    navigation.goBack();
+    navigation.navigate("Posts");
   };
   useEffect(() => {
     const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
@@ -116,6 +116,7 @@ export const CreatePostsScreen = ({ navigation }) => {
         picName,
         userId,
         login,
+        likes: 0,
       });
       console.log("Document written with ID: ", docRef.id);
     } catch (e) {
