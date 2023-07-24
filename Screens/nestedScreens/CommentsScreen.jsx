@@ -23,7 +23,6 @@ export const CommentsScreen = ({ route }) => {
 
   const { userId, login } = useSelector((state) => state.auth);
   const { photo, postId } = route.params;
-  console.log(route);
 
   useEffect(() => {
     getCommentList();

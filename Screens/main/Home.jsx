@@ -5,10 +5,12 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { PostsScreen } from "./PostsScreen";
 import { CreatePostsScreen } from "./CreatePostsScreen";
 import { ProfileScreen } from "./ProfileScreen";
+import { useNavigation } from "@react-navigation/native";
 
 const MainTab = createBottomTabNavigator();
 
-export const HomeScreen = ({ navigation }) => {
+export const HomeScreen = () => {
+  const navigation = useNavigation();
   const goToPost = () => {
     navigation.navigate("Posts");
   };

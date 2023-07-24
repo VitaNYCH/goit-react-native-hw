@@ -8,10 +8,18 @@ import {
   Image,
   FlatList,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
-import { collection, onSnapshot, where, query } from "firebase/firestore";
+import {
+  collection,
+  onSnapshot,
+  where,
+  query,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
 import { db } from "../../firebase/config";
 import img from "../../assets/images/PhotoBG.png";
 import foto from "../../assets/images/AvatarPhoto.png";
@@ -19,6 +27,7 @@ import foto from "../../assets/images/AvatarPhoto.png";
 export const ProfileScreen = () => {
   const [posts, setPosts] = useState([]);
   const { userId, login } = useSelector((state) => state.auth);
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const handlerSignOut = () => {
     dispatch(authSignOutUser());
@@ -139,7 +148,7 @@ export const ProfileScreen = () => {
                     />
                     <Text
                       style={{
-                        ...styles.text,
+                        ...styles.commentLikes,
                         color: "#BDBDBD",
                       }}>
                       {item.likes}
@@ -239,12 +248,22 @@ const styles = StyleSheet.create({
   },
   commentIcon: {
     marginTop: 16,
-    marginRight: 80,
+    marginRight: 70,
   },
   commentCount: {
     position: "relative",
     color: "#000000",
     paddingLeft: 28,
+    padding: 4,
+  },
+  commentLikes: {
+    position: "relative",
+    fontSize: 16,
+    fontFamily: "Roboto-Regular",
+    fontWeight: 400,
+    marginTop: 16,
+    color: "#000000",
+    paddingLeft: 10,
     padding: 4,
   },
   location: {

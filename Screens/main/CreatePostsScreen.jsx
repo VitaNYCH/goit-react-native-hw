@@ -117,6 +117,7 @@ export const CreatePostsScreen = ({ navigation }) => {
         userId,
         login,
         likes: 0,
+        commentList: [],
       });
       console.log("Document written with ID: ", docRef.id);
     } catch (e) {
